@@ -226,9 +226,9 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-[100dvh] font-sans selection:bg-teal-200 flex flex-col pb-20 transition-colors duration-200 select-none ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
-      <header className={`border-b px-4 py-4 sticky top-0 z-20 pt-[max(1rem,env(safe-area-inset-top))] transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-        <div className="max-w-xl mx-auto flex items-center justify-between">
+    <div className={`min-h-[100dvh] font-sans selection:bg-teal-200 flex flex-col transition-colors duration-200 select-none ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+      <header className={`border-b px-4 md:px-8 py-4 sticky top-0 z-20 pt-[max(1rem,env(safe-area-inset-top))] transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+        <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer active:scale-95 transition-transform" onClick={goHome}>
             <div className="bg-teal-600 p-2 rounded-lg shadow-sm shadow-teal-900/20"><BookOpen size={20} className="text-white" /></div>
             <h1 className="text-lg font-bold">Solo Hifz</h1>
@@ -241,14 +241,26 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-xl mx-auto p-4 flex flex-col justify-center">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-8 py-4 pb-24 flex flex-col">
         {activeTab === 'practice' && (
           <>
             {error && <div className={`p-4 rounded-xl mb-6 shadow-sm border ${theme === 'dark' ? 'bg-red-900/20 border-red-800/50 text-red-400' : 'bg-red-50 border-red-200 text-red-700'}`}>{error}</div>}
-            {appState === 'setup' && <SetupScreen surahs={surahs} selectedSurah={selectedSurah} setSelectedSurah={setSelectedSurah} startAyah={startAyah} setStartAyah={setStartAyah} endAyah={endAyah} setEndAyah={setEndAyah} onStart={handleStartSession} theme={theme} />}
-            {appState === 'loading' && <div className="flex flex-col items-center justify-center space-y-4 py-20 text-teal-600"><Loader2 size={48} className="animate-spin opacity-80" /><p className="font-medium animate-pulse">Preparing your session...</p></div>}
+            {appState === 'setup' && (
+              <div className="flex-1 flex items-center justify-center">
+                <div className="w-full max-w-lg">
+                  <SetupScreen surahs={surahs} selectedSurah={selectedSurah} setSelectedSurah={setSelectedSurah} startAyah={startAyah} setStartAyah={setStartAyah} endAyah={endAyah} setEndAyah={setEndAyah} onStart={handleStartSession} theme={theme} />
+                </div>
+              </div>
+            )}
+            {appState === 'loading' && <div className="flex-1 flex flex-col items-center justify-center space-y-4 text-teal-600"><Loader2 size={48} className="animate-spin opacity-80" /><p className="font-medium animate-pulse">Preparing your session...</p></div>}
             {appState === 'recitation' && <RecitationScreen sessionData={sessionData} onComplete={handleComplete} streak={streak} setStreak={setStreak} onRecordResult={handleRecordAyahResult} globalAyahStats={ayahStats} theme={theme} playSound={playSound} />}
-            {appState === 'complete' && <CompleteScreen streak={streak} totalAyahs={sessionData.ayahs.length} sessionResults={sessionResults} onReset={resetToSetup} onRepeat={handleRepeat} theme={theme} />}
+            {appState === 'complete' && (
+              <div className="flex-1 flex items-center justify-center">
+                <div className="w-full max-w-lg">
+                  <CompleteScreen streak={streak} totalAyahs={sessionData.ayahs.length} sessionResults={sessionResults} onReset={resetToSetup} onRepeat={handleRepeat} theme={theme} />
+                </div>
+              </div>
+            )}
           </>
         )}
         {activeTab === 'review' && <ReviewScreen ayahStats={ayahStats} onMarkReviewed={handleMarkReviewed} theme={theme} />}
@@ -257,7 +269,7 @@ export default function App() {
       </main>
 
       <div className={`fixed bottom-0 left-0 right-0 border-t z-20 pb-[max(0.5rem,env(safe-area-inset-bottom))] transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-        <div className="max-w-xl mx-auto flex justify-around p-2">
+        <div className="w-full max-w-5xl mx-auto flex justify-around px-2 py-2">
           <NavButton icon={<BookOpen size={24} className="mb-1" />} label="Practice" isActive={activeTab === 'practice'} onClick={() => setActiveTab('practice')} theme={theme} />
           <NavButton icon={<AlertCircle size={24} className="mb-1" />} label="Review" isActive={activeTab === 'review'} onClick={() => setActiveTab('review')} theme={theme} />
           <NavButton icon={<BarChart2 size={24} className="mb-1" />} label="Analytics" isActive={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} theme={theme} />
@@ -370,12 +382,12 @@ function RecitationScreen({ sessionData, onComplete, streak, setStreak, onRecord
   const hist = globalAyahStats[currentAyahKey] || { memorized: 0, somewhat: 0, review: 0 };
 
   return (
-    <div className="flex flex-col h-[75vh] justify-between space-y-4">
+    <div className="flex flex-col flex-1 justify-between space-y-4" style={{minHeight: 'calc(100dvh - 140px)'}}>
       <div className={`flex-1 overflow-hidden rounded-2xl shadow-sm border flex flex-col relative ${cardBg}`}>
         <div className={`absolute top-0 left-0 right-0 backdrop-blur-sm border-b p-4 flex justify-between items-center text-xs font-semibold z-10 ${headerBg}`}>
           <span>{sessionData.surahName}</span><span>Ayah {currentAyah.numberInSurah}</span>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 pt-16 flex flex-col justify-center min-h-[350px]">
+        <div className="flex-1 overflow-y-auto p-6 pt-16 flex flex-col justify-center">
           {mode === 'START' && (
             <div className="text-center space-y-6 m-auto animate-in fade-in zoom-in-95">
               <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${theme === 'dark' ? 'bg-teal-900/30' : 'bg-teal-100'}`}><Play size={40} className="text-teal-600 ml-2" /></div>
@@ -621,8 +633,9 @@ function AnalyticsScreen({ history, ayahStats, globalStreak, theme }) {
   const textMuted = theme === 'dark' ? 'text-slate-400' : 'text-slate-500';
 
   return (
-    <div className="space-y-6 pb-6 animate-in fade-in">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="py-2 animate-in fade-in">
+      {/* Top Stats Row */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-5 text-white shadow-md">
           <div className="flex items-center gap-2 text-teal-100 mb-2"><Target size={18} /> <span className="text-sm font-semibold uppercase tracking-wider">Accuracy</span></div>
           <div className="text-4xl font-bold">{stats.overallAccuracy}%</div>
@@ -635,7 +648,8 @@ function AnalyticsScreen({ history, ayahStats, globalStreak, theme }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      {/* Streak row */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
         {[
           { icon: <Flame size={20} className="text-orange-500 mb-1" />, val: globalStreak.current, lbl: 'Cur. Streak' },
           { icon: <Trophy size={20} className="text-amber-500 mb-1" />, val: globalStreak.longest, lbl: 'Top Streak' },
@@ -647,91 +661,97 @@ function AnalyticsScreen({ history, ayahStats, globalStreak, theme }) {
         ))}
       </div>
 
-      <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
-        <h3 className="font-bold flex items-center gap-2"><Layers size={18} className="text-indigo-500"/> Memorization Status</h3>
-        <p className={`text-xs ${textMuted}`}>Based on {stats.totalUniqueAyahs} unique ayahs tracked.</p>
-        <div className={`w-full h-4 rounded-full flex overflow-hidden ${chartBg}`}>
-           <div className="bg-emerald-500 h-full transition-all" style={{width: `${(stats.mastery.mastered/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
-           <div className="bg-amber-400 h-full transition-all" style={{width: `${(stats.mastery.familiar/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
-           <div className="bg-rose-500 h-full transition-all" style={{width: `${(stats.mastery.learning/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
+      {/* Two column layout on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
+          <h3 className="font-bold flex items-center gap-2"><Layers size={18} className="text-indigo-500"/> Memorization Status</h3>
+          <p className={`text-xs ${textMuted}`}>Based on {stats.totalUniqueAyahs} unique ayahs tracked.</p>
+          <div className={`w-full h-4 rounded-full flex overflow-hidden ${chartBg}`}>
+             <div className="bg-emerald-500 h-full transition-all" style={{width: `${(stats.mastery.mastered/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
+             <div className="bg-amber-400 h-full transition-all" style={{width: `${(stats.mastery.familiar/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
+             <div className="bg-rose-500 h-full transition-all" style={{width: `${(stats.mastery.learning/Math.max(stats.totalUniqueAyahs, 1))*100}%`}}></div>
+          </div>
+          <div className="flex justify-between text-xs font-semibold pt-1">
+            <span className="text-emerald-600 dark:text-emerald-400">Mastered ({stats.mastery.mastered})</span>
+            <span className="text-amber-600 dark:text-amber-500">Familiar ({stats.mastery.familiar})</span>
+            <span className="text-rose-600 dark:text-rose-400">Learning ({stats.mastery.learning})</span>
+          </div>
         </div>
-        <div className="flex justify-between text-xs font-semibold pt-1">
-          <span className="text-emerald-600 dark:text-emerald-400">Mastered ({stats.mastery.mastered})</span>
-          <span className="text-amber-600 dark:text-amber-500">Familiar ({stats.mastery.familiar})</span>
-          <span className="text-rose-600 dark:text-rose-400">Learning ({stats.mastery.learning})</span>
-        </div>
-      </div>
 
-      <div className={`border rounded-2xl p-5 shadow-sm space-y-6 ${cardBg}`}>
-        <h3 className="font-bold flex items-center gap-2"><Calendar size={18} className="text-teal-500"/> Weekly Activity</h3>
-        <div className="flex items-end justify-between h-32 gap-1.5 pt-2">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
-            <div key={day} className="flex flex-col items-center flex-1 group">
-              <div className={`w-full rounded-t-md relative h-24 flex items-end ${chartBg}`}>
-                <div className={`w-full rounded-t-md transition-all duration-700 ease-out relative ${stats.activityByDay[i].value > 0 ? 'bg-teal-500' : 'bg-transparent'}`} style={{ height: `${stats.activityByDay[i].pct}%` }}>
-                  <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>{stats.activityByDay[i].value}</span>
+        <div className={`border rounded-2xl p-5 shadow-sm space-y-6 ${cardBg}`}>
+          <h3 className="font-bold flex items-center gap-2"><Calendar size={18} className="text-teal-500"/> Weekly Activity</h3>
+          <div className="flex items-end justify-between h-32 gap-1.5 pt-2">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
+              <div key={day} className="flex flex-col items-center flex-1 group">
+                <div className={`w-full rounded-t-md relative h-24 flex items-end ${chartBg}`}>
+                  <div className={`w-full rounded-t-md transition-all duration-700 ease-out relative ${stats.activityByDay[i].value > 0 ? 'bg-teal-500' : 'bg-transparent'}`} style={{ height: `${stats.activityByDay[i].pct}%` }}>
+                    <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>{stats.activityByDay[i].value}</span>
+                  </div>
                 </div>
+                <span className={`text-[10px] font-semibold mt-2 ${textMuted}`}>{day}</span>
               </div>
-              <span className={`text-[10px] font-semibold mt-2 ${textMuted}`}>{day}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
-        <h3 className="font-bold flex items-center gap-2"><Star size={18} className="text-amber-500"/> Accuracy by Surah</h3>
-        <div className="space-y-3 pt-2">
-          {stats.surahAccuracyList.length > 0 ? stats.surahAccuracyList.map((d, i) => (
-            <div key={i} className="space-y-1">
-               <div className="flex justify-between text-sm">
-                 <span className="font-semibold">{d.name} <span className="text-xs font-normal opacity-60">({d.attempted} graded)</span></span>
-                 <span className={textMuted}>{d.accuracy}%</span>
-               </div>
-               <div className={`w-full h-2 rounded-full overflow-hidden ${chartBg}`}>
-                 <div className={`h-full rounded-full ${d.accuracy >= 80 ? 'bg-emerald-500' : d.accuracy >= 50 ? 'bg-amber-400' : 'bg-rose-500'}`} style={{ width: `${d.accuracy}%` }}></div>
-               </div>
-            </div>
-          )) : <div className={`text-sm italic text-center py-4 opacity-50 ${textMuted}`}>No Surah data yet.</div>}
-        </div>
-      </div>
-
-      <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
-        <h3 className="font-bold flex items-center gap-2"><Clock size={18} className="text-indigo-400"/> Practice Time Habits</h3>
-        <div className="grid grid-cols-3 gap-2">
-           <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-amber-100' : 'bg-amber-50 border-amber-100 text-amber-700'}`}>
-             <Sun size={20} className="mb-1 opacity-80" />
-             <span className="text-[10px] uppercase font-bold opacity-70">Morning</span>
-             <span className="text-lg font-bold">{stats.timeOfDay.morning}</span>
-           </div>
-           <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-orange-100' : 'bg-orange-50 border-orange-100 text-orange-700'}`}>
-             <Globe size={20} className="mb-1 opacity-80" />
-             <span className="text-[10px] uppercase font-bold opacity-70">Afternoon</span>
-             <span className="text-lg font-bold">{stats.timeOfDay.afternoon}</span>
-           </div>
-           <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-indigo-100' : 'bg-indigo-50 border-indigo-100 text-indigo-700'}`}>
-             <Moon size={20} className="mb-1 opacity-80" />
-             <span className="text-[10px] uppercase font-bold opacity-70">Evening</span>
-             <span className="text-lg font-bold">{stats.timeOfDay.evening}</span>
-           </div>
-        </div>
-      </div>
-
-      <div className={`border rounded-2xl p-5 shadow-sm space-y-6 ${cardBg}`}>
-        <h3 className="font-bold flex items-center gap-2"><TrendingUp size={18} className="text-teal-500"/> Recent Sessions Trend</h3>
-        <div className="flex items-end justify-between h-32 gap-2 pt-2">
-          {stats.barData.length > 0 ? stats.barData.map((d, i) => (
-            <div key={i} className="flex flex-col items-center flex-1 group">
-              <div className={`w-full rounded-t-md relative h-24 flex items-end ${chartBg}`}>
-                <div className="w-full bg-slate-400 dark:bg-slate-600 rounded-t-md transition-all duration-1000 ease-out relative" style={{ height: `${d.accuracy}%` }}></div>
+        <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
+          <h3 className="font-bold flex items-center gap-2"><Star size={18} className="text-amber-500"/> Accuracy by Surah</h3>
+          <div className="space-y-3 pt-2">
+            {stats.surahAccuracyList.length > 0 ? stats.surahAccuracyList.map((d, i) => (
+              <div key={i} className="space-y-1">
+                 <div className="flex justify-between text-sm">
+                   <span className="font-semibold">{d.name} <span className="text-xs font-normal opacity-60">({d.attempted} graded)</span></span>
+                   <span className={textMuted}>{d.accuracy}%</span>
+                 </div>
+                 <div className={`w-full h-2 rounded-full overflow-hidden ${chartBg}`}>
+                   <div className={`h-full rounded-full ${d.accuracy >= 80 ? 'bg-emerald-500' : d.accuracy >= 50 ? 'bg-amber-400' : 'bg-rose-500'}`} style={{ width: `${d.accuracy}%` }}></div>
+                 </div>
               </div>
-              <span className={`text-[10px] font-semibold mt-2 ${textMuted}`}>{d.label}</span>
-            </div>
-          )) : <div className={`w-full h-full flex items-center justify-center text-sm italic opacity-50 ${textMuted}`}>Complete a session to see trends.</div>}
+            )) : <div className={`text-sm italic text-center py-4 opacity-50 ${textMuted}`}>No Surah data yet.</div>}
+          </div>
+        </div>
+
+        <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${cardBg}`}>
+          <h3 className="font-bold flex items-center gap-2"><Clock size={18} className="text-indigo-400"/> Practice Time Habits</h3>
+          <div className="grid grid-cols-3 gap-2">
+             <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-amber-100' : 'bg-amber-50 border-amber-100 text-amber-700'}`}>
+               <Sun size={20} className="mb-1 opacity-80" />
+               <span className="text-[10px] uppercase font-bold opacity-70">Morning</span>
+               <span className="text-lg font-bold">{stats.timeOfDay.morning}</span>
+             </div>
+             <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-orange-100' : 'bg-orange-50 border-orange-100 text-orange-700'}`}>
+               <Globe size={20} className="mb-1 opacity-80" />
+               <span className="text-[10px] uppercase font-bold opacity-70">Afternoon</span>
+               <span className="text-lg font-bold">{stats.timeOfDay.afternoon}</span>
+             </div>
+             <div className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center ${theme === 'dark' ? 'bg-slate-900 border-slate-700 text-indigo-100' : 'bg-indigo-50 border-indigo-100 text-indigo-700'}`}>
+               <Moon size={20} className="mb-1 opacity-80" />
+               <span className="text-[10px] uppercase font-bold opacity-70">Evening</span>
+               <span className="text-lg font-bold">{stats.timeOfDay.evening}</span>
+             </div>
+          </div>
+        </div>
+
+        <div className={`border rounded-2xl p-5 shadow-sm space-y-6 md:col-span-2 ${cardBg}`}>
+          <h3 className="font-bold flex items-center gap-2"><TrendingUp size={18} className="text-teal-500"/> Recent Sessions Trend</h3>
+          <div className="flex items-end justify-between h-32 gap-2 pt-2">
+            {stats.barData.length > 0 ? stats.barData.map((d, i) => (
+              <div key={i} className="flex flex-col items-center flex-1 group">
+                <div className={`w-full rounded-t-md relative h-24 flex items-end ${chartBg}`}>
+                  <div className="w-full bg-slate-400 dark:bg-slate-600 rounded-t-md transition-all duration-1000 ease-out relative" style={{ height: `${d.accuracy}%` }}></div>
+                </div>
+                <span className={`text-[10px] font-semibold mt-2 ${textMuted}`}>{d.label}</span>
+              </div>
+            )) : <div className={`w-full h-full flex items-center justify-center text-sm italic opacity-50 ${textMuted}`}>Complete a session to see trends.</div>}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+
+
 
 function SettingsScreen({ theme, setTheme, soundEnabled, setSoundEnabled, data, onClearData, onImportData, isInstallable, installPWA }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
