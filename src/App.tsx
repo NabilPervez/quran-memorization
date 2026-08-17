@@ -375,7 +375,7 @@ function RecitationScreen({ sessionData, onComplete, streak, setStreak, onRecord
         <div className={`absolute top-0 left-0 right-0 backdrop-blur-sm border-b p-4 flex justify-between items-center text-xs font-semibold z-10 ${headerBg}`}>
           <span>{sessionData.surahName}</span><span>Ayah {currentAyah.numberInSurah}</span>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 pt-16 flex flex-col justify-center">
+        <div className="flex-1 overflow-y-auto p-4 pt-14 flex flex-col justify-center">
           {mode === 'START' && (
             <div className="text-center space-y-6 m-auto animate-in fade-in zoom-in-95">
               <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${theme === 'dark' ? 'bg-teal-900/30' : 'bg-teal-100'}`}><Play size={40} className="text-teal-600 ml-2" /></div>
@@ -387,10 +387,10 @@ function RecitationScreen({ sessionData, onComplete, streak, setStreak, onRecord
           )}
           
           {mode === 'GUESSING' && (
-            <div className="text-center space-y-6 m-auto animate-in fade-in zoom-in-95 w-full">
+            <div className="text-center space-y-3 m-auto animate-in fade-in zoom-in-95 w-full">
               <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto ${theme === 'dark' ? 'bg-slate-900' : 'bg-slate-100'}`}><BookOpen size={32} className={theme === 'dark' ? 'text-slate-600' : 'text-slate-300'} /></div>
               <div><h3 className="text-xl font-bold">Recite from memory...</h3><p className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-400'}`}>Ayah {currentAyah.numberInSurah} is currently hidden.</p></div>
-              <div className={`mt-8 pt-6 border-t flex flex-col items-center gap-3 ${theme === 'dark' ? 'border-slate-700' : 'border-slate-100'}`}>
+              <div className={`mt-3 pt-3 border-t flex flex-col items-center gap-2 ${theme === 'dark' ? 'border-slate-700' : 'border-slate-100'}`}>
                 <span className={`text-[10px] uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>Your History on this Ayah</span>
                 <div className="flex justify-center gap-4 sm:gap-6 text-xs sm:text-sm font-semibold">
                   <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div> {hist.memorized}</div>
@@ -402,7 +402,7 @@ function RecitationScreen({ sessionData, onComplete, streak, setStreak, onRecord
           )}
           
           {mode === 'REVEALED' && (
-            <div className="w-full space-y-6 animate-in fade-in py-4 flex flex-col h-full justify-center select-text">
+            <div className="w-full space-y-3 animate-in fade-in flex flex-col h-full justify-center select-text">
               <div dir="rtl" className="text-right font-arabic"><p className="text-3xl md:text-4xl leading-[2.2]">{currentAyah.text}</p></div>
               <div className={`h-px w-full ${divLine}`} />
               <div className="text-left space-y-1"><div className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider mb-1 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}><BookType size={14} /> Transliteration</div><p className={`text-lg italic leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>{currentAyah.transliteration}</p></div>
