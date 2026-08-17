@@ -17,13 +17,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+html, body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
   min-height: 100vh;
 }
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

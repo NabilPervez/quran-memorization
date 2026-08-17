@@ -226,7 +226,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-[100dvh] font-sans selection:bg-teal-200 flex flex-col transition-colors duration-200 select-none ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`min-h-[100dvh] w-full overflow-x-hidden font-sans selection:bg-teal-200 flex flex-col transition-colors duration-200 select-none ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
       <header className={`border-b px-4 md:px-8 py-4 sticky top-0 z-20 pt-[max(1rem,env(safe-area-inset-top))] transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
         <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer active:scale-95 transition-transform" onClick={goHome}>
@@ -241,26 +241,14 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-8 py-4 pb-24 flex flex-col">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-8 py-4 pb-24 flex flex-col min-w-0">
         {activeTab === 'practice' && (
           <>
             {error && <div className={`p-4 rounded-xl mb-6 shadow-sm border ${theme === 'dark' ? 'bg-red-900/20 border-red-800/50 text-red-400' : 'bg-red-50 border-red-200 text-red-700'}`}>{error}</div>}
-            {appState === 'setup' && (
-              <div className="flex-1 flex items-center justify-center">
-                <div className="w-full max-w-lg">
-                  <SetupScreen surahs={surahs} selectedSurah={selectedSurah} setSelectedSurah={setSelectedSurah} startAyah={startAyah} setStartAyah={setStartAyah} endAyah={endAyah} setEndAyah={setEndAyah} onStart={handleStartSession} theme={theme} />
-                </div>
-              </div>
-            )}
+            {appState === 'setup' && <SetupScreen surahs={surahs} selectedSurah={selectedSurah} setSelectedSurah={setSelectedSurah} startAyah={startAyah} setStartAyah={setStartAyah} endAyah={endAyah} setEndAyah={setEndAyah} onStart={handleStartSession} theme={theme} />}
             {appState === 'loading' && <div className="flex-1 flex flex-col items-center justify-center space-y-4 text-teal-600"><Loader2 size={48} className="animate-spin opacity-80" /><p className="font-medium animate-pulse">Preparing your session...</p></div>}
             {appState === 'recitation' && <RecitationScreen sessionData={sessionData} onComplete={handleComplete} streak={streak} setStreak={setStreak} onRecordResult={handleRecordAyahResult} globalAyahStats={ayahStats} theme={theme} playSound={playSound} />}
-            {appState === 'complete' && (
-              <div className="flex-1 flex items-center justify-center">
-                <div className="w-full max-w-lg">
-                  <CompleteScreen streak={streak} totalAyahs={sessionData.ayahs.length} sessionResults={sessionResults} onReset={resetToSetup} onRepeat={handleRepeat} theme={theme} />
-                </div>
-              </div>
-            )}
+            {appState === 'complete' && <CompleteScreen streak={streak} totalAyahs={sessionData.ayahs.length} sessionResults={sessionResults} onReset={resetToSetup} onRepeat={handleRepeat} theme={theme} />}
           </>
         )}
         {activeTab === 'review' && <ReviewScreen ayahStats={ayahStats} onMarkReviewed={handleMarkReviewed} theme={theme} />}
