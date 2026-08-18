@@ -127,10 +127,11 @@ export default function App() {
   useEffect(() => {
     const surah = surahs.find(s => s.number === Number(selectedSurah));
     if (surah) {
-      if (endAyah > surah.numberOfAyahs) setEndAyah(surah.numberOfAyahs);
-      if (startAyah > surah.numberOfAyahs) setStartAyah(1);
+      setEndAyah(surah.numberOfAyahs);
+      setStartAyah(prev => prev > surah.numberOfAyahs ? 1 : prev);
     }
-  }, [selectedSurah, surahs, startAyah, endAyah]);
+  }, [selectedSurah, surahs]);
+
 
   const playSound = useCallback((action) => {
     if (soundEnabled && sfxEngine[action]) sfxEngine[action]();
